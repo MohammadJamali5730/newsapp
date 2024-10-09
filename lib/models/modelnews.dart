@@ -6,7 +6,7 @@ String author;
 String title;
 String description;
 String url;
-String urlToImage;
+String image;
 String publishedAt;
 String content;
   Modelnews({
@@ -14,7 +14,7 @@ String content;
     required this.title,
     required this.description,
     required this.url,
-    required this.urlToImage,
+    required this.image,
     required this.publishedAt,
     required this.content,
   });
@@ -26,7 +26,7 @@ String content;
       'title': title,
       'description': description,
       'url': url,
-      'urlToImage': urlToImage,
+      'image': image,
       'publishedAt': publishedAt,
       'content': content,
     };
@@ -38,7 +38,7 @@ String content;
       title: map['title'] ?? ' no other',
       description: map['description'] ?? 'no description',
       url: map['url'] ?? ' no url',
-      urlToImage: map['urlToImage'] ?? ' no urlToImage',
+      image: map['image'] ?? ' no urlToImage',
       publishedAt: map['publishedAt'] ?? ' no publishedAt',
       content: map['content'] ?? ' no content',
     );

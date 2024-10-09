@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/views/screen1.dart';
 
@@ -11,10 +12,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/first',
-      getPages: [GetPage(name: '/first', page: () => const Screen1())],
+    return ScreenUtilInit(
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/first',
+        getPages: [GetPage(name: '/first', page: () => const Screen1())],
+      ),
     );
   }
 }

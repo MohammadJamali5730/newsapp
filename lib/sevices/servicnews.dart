@@ -6,15 +6,15 @@ import 'package:newsapp/models/modelnews.dart';
 class Servicnews {
   List<Modelnews>Articles =[];
   Future<List<Modelnews>> getapi() async {
-    String  Api_Key = '261409d2b21b4a47acba2bf6d5d3cb7f';
+    String  Api_Key = '12cdadafc7508dd5e50a50e083e5fdae';
     Client client = Client();
     final result = await client.get(Uri.parse(
-        'https://newsapi.org/v2/everything?q=tesla&from=2024-09-07&sortBy=publishedAt&apiKey=$Api_Key'));
+        'http://api.mediastack.com/v1/news?access_key=$Api_Key'));
 
         if(result.statusCode == 200 )
         {
           Map<String,dynamic>responsjson = jsonDecode(result.body);
-          List <dynamic> section = responsjson['articles'];
+          List <dynamic> section = responsjson['data'];
           List<Modelnews> mylist = section.map((e) {
             return Modelnews.fromMap(e);
           },).toList();

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:newsapp/main.dart';
 import 'package:newsapp/models/modelnews.dart';
 import 'package:newsapp/sevices/servicnews.dart';
-
+import 'package:flutter_animate/flutter_animate.dart';
 class Screen1 extends StatefulWidget {
   const Screen1({super.key});
 
@@ -40,24 +42,21 @@ class _Screen1State extends State<Screen1> {
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
-            preferredSize:const Size.fromHeight(30),
+            preferredSize: const Size.fromHeight(30),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                onChanged: (value){
-                return forsearch(value);
+                onChanged: (value) {
+                  return forsearch(value);
                 },
-                   controller: textEditingctrl,
-                decoration:const InputDecoration(
-                    
+                controller: textEditingctrl,
+                decoration: const InputDecoration(
                     hintText: 'Search...',
                     border: OutlineInputBorder(
-              
                         borderRadius: BorderRadius.all(Radius.circular(25)))),
               ),
             )),
         backgroundColor: Colors.orange,
-        
         centerTitle: true,
       ),
       body: isloading
@@ -68,12 +67,13 @@ class _Screen1State extends State<Screen1> {
               controller: scrollctrl,
               itemCount: loadmoredata.length,
               itemBuilder: (context, index) {
-                return Column( mainAxisAlignment: MainAxisAlignment.center,
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(loadmoredata[index].author),
                     Card(
-                      shape: Border.all(width: 0.5 , color: Colors.black38),
-                      margin:const EdgeInsets.all(10),
+                      shape: Border.all(width: 0.5, color: Colors.black38),
+                      margin: const EdgeInsets.all(10),
                       child: ListTile(
                         title: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -83,46 +83,53 @@ class _Screen1State extends State<Screen1> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(loadmoredata[index].description),
                         ),
-                        leading: Expanded(child: Image.network(loadmoredata[index].urlToImage , errorBuilder: (context, error, stackTrace) => Image.asset('assets/boy7.jpg'),)),
-                      
+                        leading: Expanded(
+                            child: Image.network(
+                          loadmoredata[index].image,width:100.w,height:100.h,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset('assets/boy7.jpg'),
+                        )),
                       ),
                     ),
-                  
                   ],
                 );
               },
-            ),
-            backgroundColor: Colors.amber[100],
+            ).animate().slide(begin: Offset(1, 0.5) , end: Offset(0, 0 ) , duration: 800.ms),
+      backgroundColor: Colors.amber[100],
     );
   }
- void forsearch(String query)
- {
-   if (query.isEmpty) {
-     setState(() {
-       loadmoredata = servicnews.Articles.sublist(0,maximum);
-     });
-     
-   }else{
-    setState(() {
-      loadmoredata = servicnews.Articles.where((element) {
-       return element.title.toLowerCase().contains(query.toLowerCase());
-      },).toList();
-    });
-   }
- }
-  void loadfive() async{
-    if (scrollctrl.position.pixels == scrollctrl.position.maxScrollExtent && textEditingctrl.text.isEmpty) {
+
+  void forsearch(String query) {
+    if (query.isEmpty) {
       setState(() {
-        maximum+=3;
+        loadmoredata = servicnews.Articles.sublist(0, maximum);
       });
-     await loaddata();
+    } else {
+      setState(() {
+        loadmoredata = servicnews.Articles.where(
+          (element) {
+            return element.title.toLowerCase().contains(query.toLowerCase());
+          },
+        ).toList();
+      });
+    }
+  }
+
+  void loadfive() async {
+    if (scrollctrl.position.pixels == scrollctrl.position.maxScrollExtent &&
+        textEditingctrl.text.isEmpty) {
+      setState(() {
+        maximum += 3;
+      });
+      await loaddata();
     }
   }
 
   Future<void> loaddata() async {
     await servicnews.getapi();
+    print('Data loaded: ${servicnews.Articles.length}');
     setState(() {
-      loadmoredata=servicnews.Articles.sublist(0, maximum);
+      loadmoredata = servicnews.Articles.sublist(0, maximum);
       isloading = false;
     });
   }
